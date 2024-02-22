@@ -2,6 +2,7 @@ $(function () {
   let untyped = "";
   let typed = "";
   let score = 0;
+  let scoreText = $("#score");
   const untypedfield = $("#untyped");
   const typedfield = $("#typed");
 
@@ -66,11 +67,16 @@ $(function () {
     typed += untyped.substring(0, 1);
     untyped = untyped.substring(1);
     typedfield.text(typed);
+    showScore(score);
     untypedfield.text(untyped);
 
     if (untyped === "") {
       createText();
     }
+  }
+
+  function showScore(score) {
+    scoreText.text(score);
   }
 
   // タイピングスキルのランクを判定
@@ -94,23 +100,27 @@ $(function () {
   // ゲームを終了させる
   function gameOver(id) {
     clearInterval(id);
+    untypedfield.text("タイムアップ！");
+    typed = "";
+    typedfield.text(typed);
 
-    const result = confirm(rankCheck(score));
-
-    if (result == true) {
-      location.reload();
-    }
+    setTimeout(() => {
+      const result = confirm(rankCheck(score));
+      if (result == true) {
+        location.reload();
+      }
+    }, 10);
   }
 
   // カウントダウンタイマー
   function timer() {
-    let time = $("#count").text();
+    let count = $("#count").text();
 
     const id = setInterval(() => {
-      time--;
-      $("#count").text(time);
+      count--;
+      $("#count").text(count);
 
-      if (time <= 0) {
+      if (count <= 0) {
         gameOver(id);
       }
     }, 1000);
@@ -120,6 +130,7 @@ $(function () {
   $("#start").on("click", function () {
     timer();
     createText();
+    scoreText.show();
 
     $("#start").hide();
 
@@ -128,4 +139,5 @@ $(function () {
   });
 
   untypedfield.text("スタートボタンで開始");
+  scoreText.hide();
 });

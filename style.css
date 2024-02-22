@@ -20,6 +20,12 @@ body {
   color: #fff;
 }
 
+.score {
+  margin: 0;
+  font-weight: bold;
+  color: #888;
+}
+
 /* 正しくタイプされた場合のテキスト */
 .typed {
   color: lightgreen;
